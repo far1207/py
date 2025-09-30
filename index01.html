@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ระบบชำระเงิน QR PromptPay</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+body { font-family: Arial; text-align:center; padding:30px; background:#f0f2f5;}
+.container { background:white; padding:30px; border-radius:10px; display:inline-block;}
+input { width:50px; margin:5px;}
+button { padding:10px 20px; margin-top:10px; background:#6772e5;color:white;border:none;border-radius:5px; cursor:pointer;}
+button:hover { background:#5469d4;}
+#qrcode { margin-top:20px;}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>สั่งซื้อสินค้า</h1>
+
+    <div>
+        <label>สินค้า A (20 บาท/ชิ้น): </label>
+        <input type="number" id="qtyA" value="0" min="0">
+    </div>
+
+    <div>
+        <label>สินค้า B (30 บาท/ชิ้น): </label>
+        <input type="number" id="qtyB" value="0" min="0">
+    </div>
+
+    <div>
+        <h3>รวมทั้งหมด: <span id="total">0</span> บาท</h3>
+    </div>
+
+    <button onclick="generateQR()">สร้าง QR Code</button>
+    <div id="qrcode"></div>
+</div>
+
+<script>
+const promptpayID = "0812345678"; // ใส่เบอร์ PromptPay หรือเลขบัญชีของคุณ
+
+function generateQR() {
+    const qtyA = parseInt(document.getElementById("qtyA").value) || 0;
+    const qtyB = parseInt(document.getElementById("qtyB").value) || 0;
+
+    const total = (qtyA*20) + (qtyB*30);
+    document.getElementById("total").innerText = total;
+
+    if(total <= 0) {
+        alert("กรุณาเลือกจำนวนสินค้าที่ถูกต้อง");
+        return;
+    }
+
+    // สร้าง QR Code
+    const qrcodeDiv = document.getElementById("qrcode");
+    qrcodeDiv.innerHTML = "";
+
+    // ตัวอย่าง payload QR PromptPay พื้นฐาน (สำหรับการทดสอบ)
+    // สำหรับใช้งานจริง ควรใช้ library promptpay-qr หรือ API ที่คำนวณ CRC16 ให้ถูกต้อง
+    const payload = `00020101021129370016A0000006770101110113${promptpayID}5303764${total}5802TH6304XXXX`;
+
+    new QRCode(qrcodeDiv, {
+        text: payload,
+        width: 200,
+        height: 200
+    });
+
+    alert("สแกน QR Code เพื่อชำระเงินยอด " + total + " บาท");
+}
+</script>
+</body>
+</html>

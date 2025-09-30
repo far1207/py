@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบชำระเงิน</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 350px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #6772e5;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #5469d4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ระบบชำระเงิน</h1>
+        <input type="number" id="amount" placeholder="จำนวนเงิน (บาท)">
+        <button id="payBtn">ชำระเงิน</button>
+    </div>
+
+    <script>
+        // ใส่ URL Payment Link ที่สร้างจาก Stripe
+        const paymentLink = "https://buy.stripe.com/test_14A9AU1I90hB2WqcIC2Ji00";
+
+        document.getElementById("payBtn").addEventListener("click", () => {
+            const amount = document.getElementById("amount").value;
+
+            if (!amount || amount <= 0) {
+                alert("กรุณากรอกจำนวนเงินที่ถูกต้อง");
+                return;
+            }
+
+            window.open(paymentLink, "_blank");
+        });
+    </script>
+</body>
+</html>
